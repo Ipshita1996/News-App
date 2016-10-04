@@ -1,0 +1,21 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">Just Java</string>
+    <string name="hint">Name</string>
+    <string name="cream">Whipped Cream</string>
+    <string name="chocolate">Chocolate</string>
+    <string name="quantity_label">QUANTITY</string>
+    <string name="toppings_label">TOPPINGS</string>
+    <string name="price_label">ORDER SUMMARY</string>
+    <string name="qty">0</string>
+    <string name="price">Rs.0</string>
+    <string name="order_button_label">ORDER</string>
+
+    /*java*/
+    <string name="extraerror">You cannot order more than a 100 cups at once!</string>
+    <string name="lesserror">Do you not want to buy any coffees?</string>
+    <string name="confirmwc">Add whipped cream? </string>
+    <string name="confirmc">Add chocolate? </string>
+    <string name="total">Total: </string>
+    <string name="name">Name: <xliff:g id="name" example="Amy">%s</xliff:g></string>
+    <string name="thanks">Thank You!</string>
+</resources>
