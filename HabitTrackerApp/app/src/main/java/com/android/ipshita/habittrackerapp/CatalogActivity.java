@@ -51,38 +51,11 @@ public class CatalogActivity extends AppCompatActivity {
         HabitDbHelper mDbHelper = new HabitDbHelper(this);
 
         // Create and/or open a database to read from it
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
         String[] projection = {HabitEntry._ID, HabitEntry.COLUMN_HABIT_NAME, HabitEntry.COLUMN_HABIT_PRIORITY,};
-        Cursor c = db.query(HabitEntry.TABLE_NAME, projection, null, null,
-                null, null, null);
 
-        try {
-            // Display the number of rows in the Cursor (which reflects the number of rows in the
-            // pets table in the database).
-            TextView displayView = (TextView) findViewById(R.id.text_view_pet);
-            displayView.setText("Number of rows in habits database table: " + c.getCount());
+        readhabit(projection);
 
-            displayView.append("\n \n" + HabitEntry._ID + " - " +
-                    HabitEntry.COLUMN_HABIT_NAME + " - " +
-                    HabitEntry.COLUMN_HABIT_PRIORITY + "\n");
-
-            int idColumnIndex = c.getColumnIndex(HabitEntry._ID);
-            int idNameIndex = c.getColumnIndex(HabitEntry.COLUMN_HABIT_NAME);
-            int idPriorityIndex = c.getColumnIndex(HabitEntry.COLUMN_HABIT_PRIORITY);
-            while (c.moveToNext()) {
-                int currentID = c.getInt(idColumnIndex);
-                String currentName = c.getString(idNameIndex);
-                int currentPriority = c.getInt(idPriorityIndex);
-
-                displayView.append("\n" + currentID + " - " + currentName + " - " + currentPriority + "\n");
-
-            }
-        } finally {
-            // Always close the cursor when you're done reading from it. This releases all its
-            // resources and makes it invalid.
-            c.close();
-        }
     }
     private void inserthabit(){
         // Gets the data repository in write mode
@@ -121,5 +94,40 @@ public class CatalogActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private Cursor readhabit(String[] projection){
+
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+        Cursor c = db.query(HabitEntry.TABLE_NAME, projection, null, null,
+                null, null, null);
+        try {
+            // Display the number of rows in the Cursor (which reflects the number of rows in the
+            // pets table in the database).
+            TextView displayView = (TextView) findViewById(R.id.text_view_pet);
+            displayView.setText("Number of rows in habits database table: " + c.getCount());
+
+            displayView.append("\n \n" + HabitEntry._ID + " - " +
+                    HabitEntry.COLUMN_HABIT_NAME + " - " +
+                    HabitEntry.COLUMN_HABIT_PRIORITY + "\n");
+
+            int idColumnIndex = c.getColumnIndex(HabitEntry._ID);
+            int idNameIndex = c.getColumnIndex(HabitEntry.COLUMN_HABIT_NAME);
+            int idPriorityIndex = c.getColumnIndex(HabitEntry.COLUMN_HABIT_PRIORITY);
+            while (c.moveToNext()) {
+                int currentID = c.getInt(idColumnIndex);
+                String currentName = c.getString(idNameIndex);
+                int currentPriority = c.getInt(idPriorityIndex);
+
+                displayView.append("\n" + currentID + " - " + currentName + " - " + currentPriority + "\n");
+
+            }
+        } finally {
+            // Always close the cursor when you're done reading from it. This releases all its
+            // resources and makes it invalid.
+            c.close();
+        }
+
+        return c;
     }
 }
