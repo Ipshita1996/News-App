@@ -54,7 +54,34 @@ public class CatalogActivity extends AppCompatActivity {
 
         String[] projection = {HabitEntry._ID, HabitEntry.COLUMN_HABIT_NAME, HabitEntry.COLUMN_HABIT_PRIORITY,};
 
-        readhabit(projection);
+        Cursor c=readhabit(projection);
+
+        try {
+            // Display the number of rows in the Cursor (which reflects the number of rows in the
+            // pets table in the database).
+            TextView displayView = (TextView) findViewById(R.id.text_view_pet);
+            displayView.setText("Number of rows in habits database table: " + c.getCount());
+
+            displayView.append("\n \n" + HabitEntry._ID + " - " +
+                    HabitEntry.COLUMN_HABIT_NAME + " - " +
+                    HabitEntry.COLUMN_HABIT_PRIORITY + "\n");
+
+            int idColumnIndex = c.getColumnIndex(HabitEntry._ID);
+            int idNameIndex = c.getColumnIndex(HabitEntry.COLUMN_HABIT_NAME);
+            int idPriorityIndex = c.getColumnIndex(HabitEntry.COLUMN_HABIT_PRIORITY);
+            while (c.moveToNext()) {
+                int currentID = c.getInt(idColumnIndex);
+                String currentName = c.getString(idNameIndex);
+                int currentPriority = c.getInt(idPriorityIndex);
+
+                displayView.append("\n" + currentID + " - " + currentName + " - " + currentPriority + "\n");
+
+            }
+        } finally {
+            // Always close the cursor when you're done reading from it. This releases all its
+            // resources and makes it invalid.
+            c.close();
+        }
 
     }
     private void inserthabit(){
@@ -101,32 +128,6 @@ public class CatalogActivity extends AppCompatActivity {
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
         Cursor c = db.query(HabitEntry.TABLE_NAME, projection, null, null,
                 null, null, null);
-        try {
-            // Display the number of rows in the Cursor (which reflects the number of rows in the
-            // pets table in the database).
-            TextView displayView = (TextView) findViewById(R.id.text_view_pet);
-            displayView.setText("Number of rows in habits database table: " + c.getCount());
-
-            displayView.append("\n \n" + HabitEntry._ID + " - " +
-                    HabitEntry.COLUMN_HABIT_NAME + " - " +
-                    HabitEntry.COLUMN_HABIT_PRIORITY + "\n");
-
-            int idColumnIndex = c.getColumnIndex(HabitEntry._ID);
-            int idNameIndex = c.getColumnIndex(HabitEntry.COLUMN_HABIT_NAME);
-            int idPriorityIndex = c.getColumnIndex(HabitEntry.COLUMN_HABIT_PRIORITY);
-            while (c.moveToNext()) {
-                int currentID = c.getInt(idColumnIndex);
-                String currentName = c.getString(idNameIndex);
-                int currentPriority = c.getInt(idPriorityIndex);
-
-                displayView.append("\n" + currentID + " - " + currentName + " - " + currentPriority + "\n");
-
-            }
-        } finally {
-            // Always close the cursor when you're done reading from it. This releases all its
-            // resources and makes it invalid.
-            c.close();
-        }
 
         return c;
     }
